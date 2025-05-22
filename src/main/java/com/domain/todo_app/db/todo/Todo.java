@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "todos")
-public class Todos {
+public class Todo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +19,10 @@ public class Todos {
     @JoinColumn(name = "owner_id")
     private User user;
 
-    protected Todos() {
+    protected Todo() {
     }
 
-    public Todos(String title, String description, User user) {
+    public Todo(String title, String description, User user) {
 
         this.title = title;
         this.description = description;
@@ -69,8 +69,8 @@ public class Todos {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Todos)) return false;
-        Todos todos = (Todos) o;
+        if (!(o instanceof Todo)) return false;
+        Todo todos = (Todo) o;
         return id != null && id.equals(todos.id);
     }
 
