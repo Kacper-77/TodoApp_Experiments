@@ -3,8 +3,6 @@ package com.domain.todo_app.db.todo;
 import com.domain.todo_app.db.user.User;
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "todos")
 public class Todos {
@@ -78,6 +76,6 @@ public class Todos {
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return id != null ? id.hashCode() : super.hashCode();
     }
 }
