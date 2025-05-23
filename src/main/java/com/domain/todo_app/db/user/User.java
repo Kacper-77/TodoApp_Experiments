@@ -14,12 +14,26 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+
+    @Column(nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private int age;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public enum Role {
+        USER,
+        ADMIN
+    }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Todo> todosList = new ArrayList<>();
@@ -27,12 +41,13 @@ public class User {
     protected User() {
     }
 
-    public User(String username, String password, int age, String phoneNumber) {
+    public User(String username, String password, int age, String phoneNumber, Role role) {
 
         this.username = username;
         this.password = password;
         this.age = age;
         this.phoneNumber = phoneNumber;
+        this.role = role;
     }
 
     @Override
@@ -70,6 +85,10 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public List<Todo> getTodosList() {

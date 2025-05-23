@@ -70,8 +70,8 @@ public class Todo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Todo)) return false;
-        Todo todos = (Todo) o;
-        return id != null && id.equals(todos.id);
+        Todo todo = (Todo) o;
+        return id != null && id.equals(todo.id);
     }
 
     @Override

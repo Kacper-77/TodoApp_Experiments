@@ -20,7 +20,7 @@ public class UserRequestDto {
             regexp = "^(?=.*[A-Z])(?=.*\\d).+$",
             message = "Password must contain at least one Capital letter and number"
     )
-    @JsonIgnore
+
     private String password;
 
     @Min(value = 13, message = "Minimum is 13 years old")
