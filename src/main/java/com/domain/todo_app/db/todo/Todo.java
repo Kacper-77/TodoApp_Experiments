@@ -69,8 +69,7 @@ public class Todo {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Todo)) return false;
-        Todo todo = (Todo) o;
+        if (!(o instanceof Todo todo)) return false;
         return id != null && id.equals(todo.id);
     }
 

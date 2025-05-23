@@ -26,7 +26,7 @@ public class UserService {
     }
 
     @Transactional
-    public User registerUser(UserRequestDto dto) {
+    public User registerUser(UserRequestDto dto) {  // To AuthService
         User newUser = userMapper.toUserEntity(dto);
         log.info("Creating user: " + newUser.getUsername());
 
@@ -38,7 +38,9 @@ public class UserService {
         User updatedUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found."));
         updatedUser.setUsername(dto.getUsername());
-        updatedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            updatedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
         updatedUser.setAge(dto.getAge());
         updatedUser.setPhoneNumber(dto.getPhoneNumber());
 
