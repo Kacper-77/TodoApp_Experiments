@@ -2,7 +2,6 @@ package com.domain.todo_app.util;
 
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.dto.UserRequestDto;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component

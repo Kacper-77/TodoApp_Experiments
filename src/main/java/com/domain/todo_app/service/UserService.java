@@ -3,7 +3,6 @@ package com.domain.todo_app.service;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.UserRequestDto;
-import com.domain.todo_app.util.UserMapper;
 import jakarta.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,21 +15,11 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @Transactional
-    public User registerUser(UserRequestDto dto) {  // To AuthService
-        User newUser = userMapper.toUserEntity(dto);
-        log.info("Creating user: " + newUser.getUsername());
-
-        return userRepository.save(newUser);
     }
 
     @Transactional

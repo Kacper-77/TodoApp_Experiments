@@ -30,10 +30,10 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<User> addUser(@Valid @RequestBody UserRequestDto dto) {
-        User newUser = userService.registerUser(dto);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<User> addUser(@Valid @RequestBody UserRequestDto dto) {
+//        User newUser = userService.registerUser(dto);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+//    }
 }
