@@ -12,6 +12,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class AuthService {
@@ -47,5 +49,4 @@ public class AuthService {
         String token = jwtUtil.generateToken(dto.getUsername());
         return new AuthResponseDto(token);
     }
-
 }
