@@ -26,14 +26,14 @@ public class AuthController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login-page")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto dto) {
         AuthResponseDto loggedUser = authService.login(dto);
 
         return ResponseEntity.status(HttpStatus.OK).body(loggedUser);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register-page")
     public ResponseEntity<User> register(@Valid @RequestBody UserRequestDto dto) {
         boolean user = userRepository.findByUsername(dto.getUsername())
                 .isPresent();

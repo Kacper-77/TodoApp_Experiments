@@ -9,7 +9,7 @@ public class UserMapper {
     public User toUserEntity(UserRequestDto dto) {
         return new User(
                 dto.getUsername(),
-                dto.getPassword(),
+                dto.getEmail(),
                 dto.getAge(),
                 dto.getPhoneNumber(),
                 User.Role.USER

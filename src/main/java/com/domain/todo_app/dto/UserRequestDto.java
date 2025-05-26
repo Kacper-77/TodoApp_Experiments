@@ -13,13 +13,19 @@ public class UserRequestDto {
     @Size(min = 1, max = 16, message = "Username must be 1-16 characters.")
     private String username;
 
+    @NotBlank(message = "Email is required.")
+    @Pattern(
+            regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\n",
+            message = "Email must be in format: example@domain.com"
+    )
+    private String email;
+
     @NotBlank(message = "Password is required.")
     @Size(min = 8, message = "Password minimum length is 8 characters.")
     @Pattern(
             regexp = "^(?=.*[A-Z])(?=.*\\d).+$",
             message = "Password must contain at least one capital letter and number."
     )
-
     private String password;
 
     @Min(value = 13, message = "Minimum age is 13 years old.")
