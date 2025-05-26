@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +22,17 @@ public class AuthService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtUtil;
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     public AuthService(UserMapper userMapper, UserRepository userRepository,
                        AuthenticationManager authenticationManager,
-                       JwtService jwtUtil,
+                       JwtService jwtService,
                        PasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
+        this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -46,10 +47,18 @@ public class AuthService {
 
     public AuthResponseDto login(LoginRequestDto dto) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword())
+                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword())
         );
 
-        String token = jwtUtil.generateToken(dto.getUsername());
+        User user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+        UserRequestDto userRequestDto = new UserRequestDto();
+        userRequestDto.setUsername(user.getUsername());
+        userRequestDto.setEmail(user.getEmail());
+        userRequestDto.setAge(user.getAge());
+
+        String token = jwtService.generateToken(userRequestDto);
         return new AuthResponseDto(token);
     }
 }
