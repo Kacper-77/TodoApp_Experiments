@@ -3,16 +3,23 @@ package com.domain.todo_app.service;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.UserRequestDto;
-import jakarta.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
 @CommonsLog
 public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -22,7 +29,18 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
+    public User getCurrentUser() throws AccessDeniedException {
+        logger.info("Auth started");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            logger.info("Exception called");
+            throw new AccessDeniedException("Access denided");
+        }
+        logger.info("name: " + authentication.getName());
+        return userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+    }
+
     public User updateUser(Long id, UserRequestDto dto) {
         User updatedUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found."));
@@ -30,6 +48,7 @@ public class UserService {
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             updatedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
+        updatedUser.setEmail(dto.getEmail());
         updatedUser.setAge(dto.getAge());
         updatedUser.setPhoneNumber(dto.getPhoneNumber());
 
@@ -46,4 +65,6 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    // implement getCurrentUser in this class instead of UserController
 }

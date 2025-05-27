@@ -37,8 +37,12 @@ public class AuthController {
     public ResponseEntity<User> register(@Valid @RequestBody UserRequestDto dto) {
         boolean user = userRepository.findByUsername(dto.getUsername())
                 .isPresent();
+        boolean email = userRepository.findByEmail(dto.getEmail())
+                .isPresent();
         if (user) {  // custom exception later
             throw new RuntimeException("User: " + dto.getUsername() + " already exists.");
+        } else if (email) {
+            throw new RuntimeException("Email: " + dto.getEmail() + " already taken.");
         }
         User newUser = authService.registerUser(dto);
 
