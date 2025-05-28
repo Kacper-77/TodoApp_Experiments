@@ -30,20 +30,16 @@ public class UserService {
     }
 
     public User getCurrentUser() throws AccessDeniedException {
-        logger.info("Auth started");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            logger.info("Exception called");
             throw new AccessDeniedException("Access denided");
         }
-        logger.info("name: " + authentication.getName());
-        return userRepository.findByUsername(authentication.getName())
+        return userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 
-    public User updateUser(Long id, UserRequestDto dto) {
-        User updatedUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found."));
+    public User updateUser(UserRequestDto dto) throws AccessDeniedException {
+        User updatedUser = getCurrentUser();
         updatedUser.setUsername(dto.getUsername());
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             updatedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -55,11 +51,14 @@ public class UserService {
         return userRepository.save(updatedUser);
     }
 
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found");
+    public void deleteUser(Long id) throws AccessDeniedException {
+        User userToDelete = getCurrentUser();
+
+        if (userToDelete.getId().equals(id)) {
+            userRepository.deleteById(id);
+        } else {
+            throw new AccessDeniedException("You can't delete another user.");
         }
-        userRepository.deleteById(id);
     }
 
     public List<User> getAllUsers() {

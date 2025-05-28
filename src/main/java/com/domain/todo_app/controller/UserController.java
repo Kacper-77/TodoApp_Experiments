@@ -26,34 +26,22 @@ public class UserController {
 
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers() throws AccessDeniedException {
-        logger.info("Getting all users");
         List<User> users = userService.getAllUsers();
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        logger.info("All users returned");
         return ResponseEntity.ok(users);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@Valid @RequestBody UserRequestDto dto) throws AccessDeniedException {
-        logger.info("updating started");
-        User auth = userService.getCurrentUser();
-        logger.info("curr user method called");
-        Long id = auth.getId();
-        User updatedUser = userService.updateUser(id, dto);
+        User updatedUser = userService.updateUser(dto);
 
         return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/delete-user/{id}")
     public void deleteUser(@PathVariable Long id) throws AccessDeniedException {
-        User auth = userService.getCurrentUser();
-        logger.info("Użytkownik chce usunąć ID: " + id);
-        logger.info("Jego własne ID: " + auth.getId());
-        if (!auth.getId().equals(id)) {
-            throw new AccessDeniedException("You can't delete another user.");
-        }
         userService.deleteUser(id);
     }
 }

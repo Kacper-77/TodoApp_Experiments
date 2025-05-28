@@ -38,6 +38,12 @@ public class AuthService {
 
     @Transactional
     public User registerUser(UserRequestDto dto) {
+        boolean alreadyExist = userRepository.existsByEmail(dto.getEmail())
+                .isPresent();
+        if (alreadyExist) {
+            throw new RuntimeException("Email is already taken.");
+        }
+
         User newUser = userMapper.toUserEntity(dto);
         newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
         log.info("Creating user: " + newUser.getUsername());
