@@ -1,4 +1,4 @@
-package com.domain.todo_app.auth;
+package com.domain.todo_app.service;
 
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
@@ -9,6 +9,8 @@ import com.domain.todo_app.util.UserMapper;
 import jakarta.transaction.Transactional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     private static final Log log = LogFactory.getLog(AuthService.class);
     private final UserMapper userMapper;
@@ -36,17 +40,12 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
     public User registerUser(UserRequestDto dto) {
-        boolean alreadyExist = userRepository.existsByEmail(dto.getEmail())
+        boolean isInDB = userRepository.findByEmail(dto.getEmail())
                 .isPresent();
-        if (alreadyExist) {
-            throw new RuntimeException("Email is already taken.");
-        }
 
         User newUser = userMapper.toUserEntity(dto);
         newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
-        log.info("Creating user: " + newUser.getUsername());
 
         return userRepository.save(newUser);
     }

@@ -1,5 +1,6 @@
 package com.domain.todo_app.controller;
 
+import com.domain.todo_app.db.todo.Todo;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.dto.UserRequestDto;
 import com.domain.todo_app.service.UserService;
@@ -33,7 +34,14 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("/update/{id}")
+    @GetMapping("/my-todos")
+    public ResponseEntity<List<Todo>> getUserTodos() throws AccessDeniedException {
+        List<Todo> userTodos = userService.getAllTodos();
+
+        return ResponseEntity.ok(userTodos);
+    }
+
+    @PutMapping("/update")
     public ResponseEntity<User> updateUser(@Valid @RequestBody UserRequestDto dto) throws AccessDeniedException {
         User updatedUser = userService.updateUser(dto);
 
@@ -41,7 +49,9 @@ public class UserController {
     }
 
     @DeleteMapping("/delete-user/{id}")
-    public void deleteUser(@PathVariable Long id) throws AccessDeniedException {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) throws AccessDeniedException {
         userService.deleteUser(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,8 @@
 package com.domain.todo_app.db.user;
 
 import com.domain.todo_app.db.todo.Todo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -38,7 +40,8 @@ public class User {
         ADMIN
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ownerId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Todo> todosList = new ArrayList<>();
 
     protected User() {
@@ -121,16 +124,6 @@ public class User {
 
     public List<Todo> getTodosList() {
         return todosList;
-    }
-
-    public void addTodo(Todo todo) {
-        this.todosList.add(todo);
-        todo.setUser(this);
-    }
-
-    public void removeTodo(Todo todo) {
-        this.todosList.remove(todo);
-        todo.setUser(null);
     }
 
     @Override

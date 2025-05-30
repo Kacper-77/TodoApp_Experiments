@@ -1,4 +1,4 @@
-package com.domain.todo_app.auth;
+package com.domain.todo_app.service;
 
 import com.domain.todo_app.dto.UserRequestDto;
 import io.jsonwebtoken.Claims;

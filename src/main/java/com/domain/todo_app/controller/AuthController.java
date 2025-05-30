@@ -1,6 +1,6 @@
 package com.domain.todo_app.controller;
 
-import com.domain.todo_app.auth.AuthService;
+import com.domain.todo_app.service.AuthService;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.AuthResponseDto;
@@ -35,15 +35,6 @@ public class AuthController {
 
     @PostMapping("/register-page")
     public ResponseEntity<User> register(@Valid @RequestBody UserRequestDto dto) {
-        boolean user = userRepository.findByUsername(dto.getUsername())
-                .isPresent();
-        boolean email = userRepository.findByEmail(dto.getEmail())
-                .isPresent();
-        if (user) {  // custom exception later
-            throw new RuntimeException("User: " + dto.getUsername() + " already exists.");
-        } else if (email) {
-            throw new RuntimeException("Email: " + dto.getEmail() + " already taken.");
-        }
         User newUser = authService.registerUser(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);

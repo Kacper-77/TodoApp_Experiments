@@ -1,4 +1,4 @@
-package com.domain.todo_app.service;
+package com.domain.todo_app.config;
 
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;

@@ -1,6 +1,8 @@
 package com.domain.todo_app.db.todo;
 
 import com.domain.todo_app.db.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,23 +13,38 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
     private Long id;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
+    public enum Priority {
+        LOW,
+        MEDIUM,
+        HIGH
+    }
+
+    @Column(nullable = false)
     private boolean completed;
 
-    @ManyToOne
     @JoinColumn(name = "owner_id")
-    private User user;
+    private Long ownerId;
 
     protected Todo() {
     }
 
-    public Todo(String title, String description, User user) {
+    public Todo(String title, String description, Priority priority, Long ownerId) {
 
         this.title = title;
         this.description = description;
+        this.priority = priority;
         this.completed = false;
-        this.user = user;
+        this.ownerId = ownerId;
     }
 
     public Long getId() {
@@ -50,6 +67,14 @@ public class Todo {
         this.description = description;
     }
 
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     public boolean isCompleted() {
         return completed;
     }
@@ -58,12 +83,8 @@ public class Todo {
         this.completed = completed;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
     @Override

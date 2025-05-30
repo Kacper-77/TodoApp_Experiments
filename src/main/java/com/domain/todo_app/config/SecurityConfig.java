@@ -1,7 +1,7 @@
 package com.domain.todo_app.config;
 
 import com.domain.todo_app.auth.JwtAuthenticationFilter;
-import com.domain.todo_app.auth.JwtService;
+import com.domain.todo_app.service.JwtService;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
