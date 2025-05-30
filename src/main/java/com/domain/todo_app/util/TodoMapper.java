@@ -14,4 +14,11 @@ public class TodoMapper {
                 id
         );
     };
+
+    public Todo toTodoEntity(TodoRequestDto dto) {
+        return new Todo(dto.getTitle(),
+                dto.getDescription(),
+                dto.getPriority()
+        );
+    };
 }

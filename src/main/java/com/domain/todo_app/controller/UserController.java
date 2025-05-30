@@ -54,4 +54,11 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/admin/{userId}/give-role")
+    public ResponseEntity<User> giveRoleToUser(@PathVariable Long userId, @RequestParam User.Role newRole) throws AccessDeniedException {
+        User updatedUser = userService.changeRole(userId, newRole);
+
+        return ResponseEntity.ok(updatedUser);
+    }
 }

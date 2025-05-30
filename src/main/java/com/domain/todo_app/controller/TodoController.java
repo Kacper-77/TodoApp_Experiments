@@ -1,7 +1,6 @@
 package com.domain.todo_app.controller;
 
 import com.domain.todo_app.db.todo.Todo;
-import com.domain.todo_app.db.todo.TodoRepository;
 import com.domain.todo_app.dto.TodoRequestDto;
 import com.domain.todo_app.service.TodoService;
 import jakarta.validation.Valid;
@@ -27,5 +26,19 @@ public class TodoController {
         Todo todo = todoService.addTodo(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(todo);
+    }
+
+    @PutMapping("/update-todo/{todoId}")
+    public ResponseEntity<Todo> updateTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto dto) throws AccessDeniedException {
+        Todo updatedTodo = todoService.updateTodo(todoId, dto);
+
+        return ResponseEntity.ok(updatedTodo);
+    }
+
+    @PutMapping("/{todoId}/status")
+    public ResponseEntity<Todo> setTodoStatus(@PathVariable Long todoId) throws AccessDeniedException {
+        Todo todoStatus = todoService.toggleCompletedTodo(todoId);
+
+        return ResponseEntity.ok(todoStatus);
     }
 }

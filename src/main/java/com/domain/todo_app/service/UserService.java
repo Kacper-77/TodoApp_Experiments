@@ -4,6 +4,7 @@ import com.domain.todo_app.db.todo.Todo;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.UserRequestDto;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.apachecommons.CommonsLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 @Service
@@ -71,5 +73,25 @@ public class UserService {
         return userTodos.getTodosList() != null ? userTodos.getTodosList() : Collections.emptyList();
     }
 
-    // implement getCurrentUser in this class instead of UserController
+    public User changeRole(Long userId, User.Role newRole) throws AccessDeniedException {
+        User admin = getCurrentUser();
+        User userToChange = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found."));
+
+        long adminCount = userRepository.countByRole(User.Role.ADMIN);
+        if (admin.getRole().equals(User.Role.ADMIN) && adminCount == 1 && newRole.equals(User.Role.USER)) {
+            throw new IllegalStateException("Cannot remove the last administrator.");
+        }
+
+        if (!admin.getRole().equals(User.Role.ADMIN)) {
+            throw new AccessDeniedException("You can't change role of users.");
+        }
+
+        if (newRole == null || !EnumSet.of(User.Role.USER, User.Role.ADMIN).contains(newRole)) {
+            throw new IllegalArgumentException("Invalid role provided");
+        }
+        userToChange.setRole(newRole);
+
+        return userRepository.save(userToChange);
+    }
 }

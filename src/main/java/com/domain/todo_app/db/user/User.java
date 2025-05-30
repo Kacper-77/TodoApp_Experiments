@@ -122,6 +122,10 @@ public class User {
         return role;
     }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public List<Todo> getTodosList() {
         return todosList;
     }

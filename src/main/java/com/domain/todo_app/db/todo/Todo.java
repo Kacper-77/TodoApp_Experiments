@@ -47,6 +47,13 @@ public class Todo {
         this.ownerId = ownerId;
     }
 
+    public Todo(String title, String description, Priority priority) {
+
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+    }
+
     public Long getId() {
         return id;
     }
