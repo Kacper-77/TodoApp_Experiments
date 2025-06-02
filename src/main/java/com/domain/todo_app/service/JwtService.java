@@ -1,5 +1,6 @@
 package com.domain.todo_app.service;
 
+import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.dto.UserRequestDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -42,6 +43,14 @@ public class JwtService {
                 .setExpiration(expireDate)
                 .signWith(key)
                 .compact();
+    }
+
+    public String generateToken(User user) {
+        UserRequestDto dto = new UserRequestDto();
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setAge(user.getAge());
+        return generateToken(dto);
     }
 
     public boolean validateToken(String token) {

@@ -73,7 +73,7 @@ public class UserService {
         return userTodos.getTodosList() != null ? userTodos.getTodosList() : Collections.emptyList();
     }
 
-    public User changeRole(Long userId, User.Role newRole) throws AccessDeniedException {
+    public User adminChangeRole(Long userId, User.Role newRole) throws AccessDeniedException {
         User admin = getCurrentUser();
         User userToChange = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found."));
@@ -93,5 +93,14 @@ public class UserService {
         userToChange.setRole(newRole);
 
         return userRepository.save(userToChange);
+    }
+
+    public void adminDeleteUser(Long userId) throws AccessDeniedException {
+        User admin = getCurrentUser();
+
+        if (!admin.getRole().equals(User.Role.ADMIN)) {
+            throw new AccessDeniedException("You don't have permission to do this");
+        }
+        userRepository.deleteById(userId);
     }
 }

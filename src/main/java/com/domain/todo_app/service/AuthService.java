@@ -1,5 +1,7 @@
 package com.domain.todo_app.service;
 
+import com.domain.todo_app.auth.RefreshToken;
+import com.domain.todo_app.auth.RefreshTokenService;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.AuthResponseDto;
@@ -28,16 +30,19 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
 
     public AuthService(UserMapper userMapper, UserRepository userRepository,
                        AuthenticationManager authenticationManager,
                        JwtService jwtService,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       RefreshTokenService refreshTokenService) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.refreshTokenService = refreshTokenService;
     }
 
     public User registerUser(UserRequestDto dto) {
@@ -64,6 +69,8 @@ public class AuthService {
         userRequestDto.setAge(user.getAge());
 
         String token = jwtService.generateToken(userRequestDto);
-        return new AuthResponseDto(token);
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
+
+        return new AuthResponseDto(token, refreshToken.getToken());
     }
 }

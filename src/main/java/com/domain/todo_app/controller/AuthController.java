@@ -1,29 +1,33 @@
 package com.domain.todo_app.controller;
 
+import com.domain.todo_app.auth.RefreshTokenService;
+import com.domain.todo_app.dto.RefreshTokenDto;
 import com.domain.todo_app.service.AuthService;
 import com.domain.todo_app.db.user.User;
-import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.AuthResponseDto;
 import com.domain.todo_app.dto.LoginRequestDto;
 import com.domain.todo_app.dto.UserRequestDto;
+import com.domain.todo_app.service.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 @RequestMapping(("/auth"))
 public class AuthController {
 
     private final AuthService authService;
-    private final UserRepository userRepository;
+    private final RefreshTokenService refreshTokenService;
+    private final JwtService jwtService;
 
-    public AuthController(AuthService authService, UserRepository userRepository) {
+    public AuthController(AuthService authService, RefreshTokenService refreshTokenService, JwtService jwtService) {
         this.authService = authService;
-        this.userRepository = userRepository;
+        this.refreshTokenService = refreshTokenService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/login-page")
@@ -38,5 +42,27 @@ public class AuthController {
         User newUser = authService.registerUser(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<AuthResponseDto> refreshToken(@RequestBody RefreshTokenDto request) {
+        String refreshToken = request.getRefreshToken();
+
+        var token = refreshTokenService.findByToken(refreshToken)
+                .orElseThrow(() -> new RuntimeException("Invalid refresh token."));
+
+        if (token.getExpiryDate().isBefore(LocalDateTime.now())) {
+            refreshTokenService.deleteByUser(token.getUser());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        String newAccessToken = jwtService.generateToken(token.getUser());
+        return ResponseEntity.ok(new AuthResponseDto(newAccessToken, refreshToken));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestParam String refreshToken) {
+        refreshTokenService.deleteByToken(refreshToken);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
