@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Collections;
@@ -42,6 +43,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 
+    @Transactional
     public User updateUser(UserRequestDto dto) throws AccessDeniedException {
         User updatedUser = getCurrentUser();
         
@@ -54,6 +56,7 @@ public class UserService {
         return userRepository.save(updatedUser);
     }
 
+    @Transactional
     public void deleteUser(Long id) throws AccessDeniedException {
         User userToDelete = getCurrentUser();
 
@@ -73,6 +76,7 @@ public class UserService {
         return userTodos.getTodosList() != null ? userTodos.getTodosList() : Collections.emptyList();
     }
 
+    @Transactional
     public User adminChangeRole(Long userId, User.Role newRole) throws AccessDeniedException {
         User admin = getCurrentUser();
         User userToChange = userRepository.findById(userId)
@@ -95,6 +99,7 @@ public class UserService {
         return userRepository.save(userToChange);
     }
 
+    @Transactional
     public void adminDeleteUser(Long userId) throws AccessDeniedException {
         User admin = getCurrentUser();
 

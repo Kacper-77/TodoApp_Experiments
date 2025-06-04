@@ -1,4 +1,4 @@
-package com.domain.todo_app.auth;
+package com.domain.todo_app.db.token;
 
 import com.domain.todo_app.db.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;

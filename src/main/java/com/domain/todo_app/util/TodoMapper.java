@@ -10,15 +10,13 @@ public class TodoMapper {
     public Todo toTodoEntity(TodoRequestDto dto, Long id) {
         return new Todo(dto.getTitle(),
                 dto.getDescription(),
-                dto.getPriority(),
                 id
         );
     };
 
     public Todo toTodoEntity(TodoRequestDto dto) {
         return new Todo(dto.getTitle(),
-                dto.getDescription(),
-                dto.getPriority()
+                dto.getDescription()
         );
     };
 }

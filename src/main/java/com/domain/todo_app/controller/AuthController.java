@@ -1,6 +1,7 @@
 package com.domain.todo_app.controller;
 
-import com.domain.todo_app.auth.RefreshTokenService;
+import com.domain.todo_app.db.token.RefreshTokenRepository;
+import com.domain.todo_app.service.RefreshTokenService;
 import com.domain.todo_app.dto.RefreshTokenDto;
 import com.domain.todo_app.service.AuthService;
 import com.domain.todo_app.db.user.User;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @RestController
 @RequestMapping(("/auth"))
@@ -22,12 +22,17 @@ public class AuthController {
 
     private final AuthService authService;
     private final RefreshTokenService refreshTokenService;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtService jwtService;
 
-    public AuthController(AuthService authService, RefreshTokenService refreshTokenService, JwtService jwtService) {
+    public AuthController(AuthService authService,
+                          RefreshTokenService refreshTokenService,
+                          JwtService jwtService,
+                          RefreshTokenRepository refreshTokenRepository) {
         this.authService = authService;
         this.refreshTokenService = refreshTokenService;
         this.jwtService = jwtService;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @PostMapping("/login-page")
@@ -38,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/register-page")
-    public ResponseEntity<User> register(@Valid @RequestBody UserRequestDto dto) {
+    public ResponseEntity<User> register(@Valid @RequestBody UserRequestDto dto) throws IllegalAccessException {
         User newUser = authService.registerUser(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
@@ -48,7 +53,7 @@ public class AuthController {
     public ResponseEntity<AuthResponseDto> refreshToken(@RequestBody RefreshTokenDto request) {
         String refreshToken = request.getRefreshToken();
 
-        var token = refreshTokenService.findByToken(refreshToken)
+        var token = refreshTokenRepository.findByToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token."));
 
         if (token.getExpiryDate().isBefore(LocalDateTime.now())) {
@@ -60,7 +65,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponseDto(newAccessToken, refreshToken));
     }
 
-    @PostMapping("/logout")
+    @DeleteMapping("/logout")
     public ResponseEntity<Void> logout(@RequestParam String refreshToken) {
         refreshTokenService.deleteByToken(refreshToken);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

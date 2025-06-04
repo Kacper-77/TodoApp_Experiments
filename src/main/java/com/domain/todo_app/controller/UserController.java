@@ -2,7 +2,6 @@ package com.domain.todo_app.controller;
 
 import com.domain.todo_app.db.todo.Todo;
 import com.domain.todo_app.db.user.User;
-import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.UserRequestDto;
 import com.domain.todo_app.service.UserService;
 import jakarta.validation.Valid;
@@ -21,11 +20,9 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     @GetMapping("/all")
@@ -66,8 +63,8 @@ public class UserController {
     }
 
     @DeleteMapping("/admin/delete-user/{userId}")
-    public ResponseEntity<Void> adminDeleteUser(@PathVariable Long userId) {
-        userRepository.deleteById(userId);
+    public ResponseEntity<Void> adminDeleteUser(@PathVariable Long userId) throws AccessDeniedException {
+        userService.adminDeleteUser(userId);
 
         return ResponseEntity.noContent().build();
     }

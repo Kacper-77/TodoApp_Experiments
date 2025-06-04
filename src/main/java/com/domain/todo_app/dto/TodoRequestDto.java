@@ -18,7 +18,4 @@ public class TodoRequestDto {
     @NotBlank(message = "Description is required.")
     @Size(min = 1, max = 60, message = "Description must be 1-60 characters.")
     private String description;
-
-    @NotNull(message = "priority is required")
-    private Todo.Priority priority;
 }

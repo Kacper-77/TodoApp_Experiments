@@ -1,14 +1,12 @@
 package com.domain.todo_app.service;
 
-import com.domain.todo_app.auth.RefreshToken;
-import com.domain.todo_app.auth.RefreshTokenService;
+import com.domain.todo_app.db.token.RefreshToken;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.AuthResponseDto;
 import com.domain.todo_app.dto.LoginRequestDto;
 import com.domain.todo_app.dto.UserRequestDto;
 import com.domain.todo_app.util.UserMapper;
-import jakarta.transaction.Transactional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
@@ -18,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
@@ -45,10 +44,14 @@ public class AuthService {
         this.refreshTokenService = refreshTokenService;
     }
 
-    public User registerUser(UserRequestDto dto) {
+    @Transactional
+    public User registerUser(UserRequestDto dto) throws IllegalAccessException {
         boolean isInDB = userRepository.findByEmail(dto.getEmail())
                 .isPresent();
 
+        if (isInDB) {
+            throw new IllegalAccessException("Email alredy exists.");
+        }
         User newUser = userMapper.toUserEntity(dto);
         newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
 

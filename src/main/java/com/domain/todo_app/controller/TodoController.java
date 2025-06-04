@@ -22,15 +22,17 @@ public class TodoController {
     }
 
     @PostMapping("/add-todo")
-    public ResponseEntity<Todo> addTodo(@Valid @RequestBody TodoRequestDto dto) throws AccessDeniedException {
-        Todo todo = todoService.addTodo(dto);
+    public ResponseEntity<Todo> addTodo(@Valid @RequestBody TodoRequestDto dto, @RequestParam Todo.Priority priority) throws AccessDeniedException {
+        Todo todo = todoService.addTodo(dto, priority);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(todo);
     }
 
     @PutMapping("/update-todo/{todoId}")
-    public ResponseEntity<Todo> updateTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto dto) throws AccessDeniedException {
-        Todo updatedTodo = todoService.updateTodo(todoId, dto);
+    public ResponseEntity<Todo> updateTodo(@PathVariable Long todoId,
+                                           @RequestBody TodoRequestDto dto,
+                                           @RequestParam Todo.Priority priority) throws AccessDeniedException {
+        Todo updatedTodo = todoService.updateTodo(todoId, dto, priority);
 
         return ResponseEntity.ok(updatedTodo);
     }
@@ -40,5 +42,12 @@ public class TodoController {
         Todo todoStatus = todoService.toggleCompletedTodo(todoId);
 
         return ResponseEntity.ok(todoStatus);
+    }
+
+    @DeleteMapping("/delete-todo/{todoId}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long todoId) throws AccessDeniedException {
+        todoService.deleteTodo(todoId);
+
+        return ResponseEntity.noContent().build();
     }
 }

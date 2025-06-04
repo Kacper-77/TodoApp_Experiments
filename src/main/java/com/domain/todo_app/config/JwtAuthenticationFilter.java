@@ -1,4 +1,4 @@
-package com.domain.todo_app.auth;
+package com.domain.todo_app.config;
 
 import com.domain.todo_app.service.JwtService;
 import jakarta.servlet.FilterChain;

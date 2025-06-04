@@ -1,12 +1,14 @@
-package com.domain.todo_app.auth;
+package com.domain.todo_app.service;
 
+import com.domain.todo_app.db.token.RefreshToken;
+import com.domain.todo_app.db.token.RefreshTokenRepository;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,15 +35,13 @@ public class RefreshTokenService {
         return refreshTokenRepository.save(refreshToken);
     }
 
-    public Optional<RefreshToken> findByToken(String token) {
-        return refreshTokenRepository.findByToken(token);
-    }
-
+    @Transactional
     public void deleteByUser(User user) {
         refreshTokenRepository.deleteByUser(user);
     }
 
-    public void deleteByToken(String refreshToken) {
-        refreshTokenRepository.deleteByToken(refreshToken);  // not works, I'll fix it next time
+    @Transactional
+    public void deleteByToken(String token) {
+        refreshTokenRepository.deleteByToken(token);
     }
 }

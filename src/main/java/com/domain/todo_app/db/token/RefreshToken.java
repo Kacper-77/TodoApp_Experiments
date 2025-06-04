@@ -1,4 +1,4 @@
-package com.domain.todo_app.auth;
+package com.domain.todo_app.db.token;
 
 import com.domain.todo_app.db.user.User;
 import jakarta.persistence.*;
@@ -17,6 +17,7 @@ public class RefreshToken {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private String token;

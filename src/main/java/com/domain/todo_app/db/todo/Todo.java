@@ -38,20 +38,18 @@ public class Todo {
     protected Todo() {
     }
 
-    public Todo(String title, String description, Priority priority, Long ownerId) {
+    public Todo(String title, String description, Long ownerId) {
 
         this.title = title;
         this.description = description;
-        this.priority = priority;
         this.completed = false;
         this.ownerId = ownerId;
     }
 
-    public Todo(String title, String description, Priority priority) {
+    public Todo(String title, String description) {
 
         this.title = title;
         this.description = description;
-        this.priority = priority;
     }
 
     public Long getId() {
