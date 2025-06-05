@@ -1,6 +1,7 @@
 package com.domain.todo_app.config;
 
-import com.domain.todo_app.service.JwtService;
+import com.domain.todo_app.auth.jwt.JwtAuthenticationFilter;
+import com.domain.todo_app.auth.jwt.JwtService;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -39,7 +40,6 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/users/**", "/todos/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/users/admin/**").hasRole("ADMIN")
-                        //.requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

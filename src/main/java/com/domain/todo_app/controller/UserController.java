@@ -34,13 +34,6 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/my-todos")
-    public ResponseEntity<List<Todo>> getUserTodos() throws AccessDeniedException {
-        List<Todo> userTodos = userService.getAllTodos();
-
-        return ResponseEntity.ok(userTodos);
-    }
-
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@Valid @RequestBody UserRequestDto dto) throws AccessDeniedException {
         User updatedUser = userService.updateUser(dto);

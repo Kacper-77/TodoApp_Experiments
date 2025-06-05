@@ -1,11 +1,12 @@
-package com.domain.todo_app.service;
+package com.domain.todo_app.auth.service_and_controller;
 
-import com.domain.todo_app.db.token.RefreshToken;
+import com.domain.todo_app.auth.refresh_token.RefreshToken;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.AuthResponseDto;
 import com.domain.todo_app.dto.LoginRequestDto;
 import com.domain.todo_app.dto.UserRequestDto;
+import com.domain.todo_app.auth.jwt.JwtService;
 import com.domain.todo_app.util.UserMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

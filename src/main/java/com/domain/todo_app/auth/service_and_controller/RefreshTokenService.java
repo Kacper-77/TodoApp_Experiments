@@ -1,7 +1,7 @@
-package com.domain.todo_app.service;
+package com.domain.todo_app.auth.service_and_controller;
 
-import com.domain.todo_app.db.token.RefreshToken;
-import com.domain.todo_app.db.token.RefreshTokenRepository;
+import com.domain.todo_app.auth.refresh_token.RefreshToken;
+import com.domain.todo_app.auth.refresh_token.RefreshTokenRepository;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;

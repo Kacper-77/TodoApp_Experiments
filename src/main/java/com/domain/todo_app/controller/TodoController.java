@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/todos")
@@ -19,6 +20,13 @@ public class TodoController {
     public TodoController(TodoService todoService) {
 
         this.todoService = todoService;
+    }
+
+    @GetMapping("/my-todos")
+    public ResponseEntity<List<Todo>> getAllTodos() throws AccessDeniedException {
+        List<Todo> allTodos = todoService.getAllTodos();
+
+        return ResponseEntity.ok(allTodos);
     }
 
     @PostMapping("/add-todo")

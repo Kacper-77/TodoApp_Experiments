@@ -1,6 +1,5 @@
-package com.domain.todo_app.config;
+package com.domain.todo_app.auth.jwt;
 
-import com.domain.todo_app.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

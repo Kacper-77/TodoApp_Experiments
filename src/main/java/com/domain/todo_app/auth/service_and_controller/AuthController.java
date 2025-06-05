@@ -1,14 +1,12 @@
-package com.domain.todo_app.controller;
+package com.domain.todo_app.auth.service_and_controller;
 
-import com.domain.todo_app.db.token.RefreshTokenRepository;
-import com.domain.todo_app.service.RefreshTokenService;
+import com.domain.todo_app.auth.refresh_token.RefreshTokenRepository;
 import com.domain.todo_app.dto.RefreshTokenDto;
-import com.domain.todo_app.service.AuthService;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.dto.AuthResponseDto;
 import com.domain.todo_app.dto.LoginRequestDto;
 import com.domain.todo_app.dto.UserRequestDto;
-import com.domain.todo_app.service.JwtService;
+import com.domain.todo_app.auth.jwt.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

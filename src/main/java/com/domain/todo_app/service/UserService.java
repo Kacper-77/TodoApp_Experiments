@@ -71,11 +71,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<Todo> getAllTodos() throws AccessDeniedException {
-        User userTodos = getCurrentUser();
-        return userTodos.getTodosList() != null ? userTodos.getTodosList() : Collections.emptyList();
-    }
-
     @Transactional
     public User adminChangeRole(Long userId, User.Role newRole) throws AccessDeniedException {
         User admin = getCurrentUser();

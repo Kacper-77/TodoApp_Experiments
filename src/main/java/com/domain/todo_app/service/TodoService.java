@@ -7,10 +7,10 @@ import com.domain.todo_app.dto.TodoRequestDto;
 import com.domain.todo_app.util.TodoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.nio.file.AccessDeniedException;
+import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -24,6 +24,11 @@ public class TodoService {
         this.userService = userService;
         this.todoRepository = todoRepository;
         this.todoMapper = todoMapper;
+    }
+
+    public List<Todo> getAllTodos() throws AccessDeniedException {
+        User userTodos = userService.getCurrentUser();
+        return userTodos.getTodosList() != null ? userTodos.getTodosList() : Collections.emptyList();
     }
 
     public Todo addTodo(TodoRequestDto dto, Todo.Priority priority) throws AccessDeniedException {

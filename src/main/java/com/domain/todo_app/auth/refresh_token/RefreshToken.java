@@ -1,4 +1,4 @@
-package com.domain.todo_app.db.token;
+package com.domain.todo_app.auth.refresh_token;
 
 import com.domain.todo_app.db.user.User;
 import jakarta.persistence.*;
