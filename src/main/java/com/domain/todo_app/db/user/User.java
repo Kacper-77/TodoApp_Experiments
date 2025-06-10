@@ -2,7 +2,6 @@ package com.domain.todo_app.db.user;
 
 import com.domain.todo_app.db.todo.Todo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
