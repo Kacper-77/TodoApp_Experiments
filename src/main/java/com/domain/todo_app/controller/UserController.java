@@ -1,6 +1,5 @@
 package com.domain.todo_app.controller;
 
-import com.domain.todo_app.db.todo.Todo;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.dto.UserRequestDto;
 import com.domain.todo_app.service.UserService;

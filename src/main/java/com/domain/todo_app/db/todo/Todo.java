@@ -1,8 +1,5 @@
 package com.domain.todo_app.db.todo;
 
-import com.domain.todo_app.db.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity

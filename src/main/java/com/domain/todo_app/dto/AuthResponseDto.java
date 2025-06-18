@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class AuthResponseDto {
 
-    private String token;
+    private final String token;
     private String refreshToken;
 
     public AuthResponseDto(String token) {

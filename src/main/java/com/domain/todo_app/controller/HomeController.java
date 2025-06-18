@@ -13,6 +13,6 @@ public class HomeController {
     @GetMapping("/")
     public String home() {
         logger.info("Running");
-        return "Hello, world!";
+        return "Hello in my first full-stack app!";
     }
 }

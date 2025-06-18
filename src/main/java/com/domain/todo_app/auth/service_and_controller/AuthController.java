@@ -1,12 +1,10 @@
 package com.domain.todo_app.auth.service_and_controller;
 
-import com.domain.todo_app.auth.refresh_token.RefreshTokenRepository;
 import com.domain.todo_app.dto.RefreshTokenDto;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.dto.AuthResponseDto;
 import com.domain.todo_app.dto.LoginRequestDto;
 import com.domain.todo_app.dto.UserRequestDto;
-import com.domain.todo_app.auth.jwt.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +18,10 @@ public class AuthController {
 
     private final AuthService authService;
     private final RefreshTokenService refreshTokenService;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final JwtService jwtService;
 
-    public AuthController(AuthService authService,
-                          RefreshTokenService refreshTokenService,
-                          JwtService jwtService,
-                          RefreshTokenRepository refreshTokenRepository) {
+    public AuthController(AuthService authService, RefreshTokenService refreshTokenService) {
         this.authService = authService;
         this.refreshTokenService = refreshTokenService;
-        this.jwtService = jwtService;
-        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @PostMapping("/login-page")
@@ -49,23 +40,15 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthResponseDto> refreshToken(@RequestBody RefreshTokenDto request) {
-        String refreshToken = request.getRefreshToken();
+        AuthResponseDto response = authService.getRefreshToken(request);
 
-        var token = refreshTokenRepository.findByToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token."));
-
-        if (token.getExpiryDate().isBefore(LocalDateTime.now())) {
-            refreshTokenService.deleteByUser(token.getUser());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
-        String newAccessToken = jwtService.generateToken(token.getUser());
-        return ResponseEntity.ok(new AuthResponseDto(newAccessToken, refreshToken));
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/logout")
     public ResponseEntity<Void> logout(@RequestParam String refreshToken) {
         refreshTokenService.deleteByToken(refreshToken);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

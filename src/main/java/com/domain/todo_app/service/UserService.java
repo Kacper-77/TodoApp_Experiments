@@ -1,6 +1,5 @@
 package com.domain.todo_app.service;
 
-import com.domain.todo_app.db.todo.Todo;
 import com.domain.todo_app.db.user.User;
 import com.domain.todo_app.db.user.UserRepository;
 import com.domain.todo_app.dto.UserRequestDto;
@@ -14,9 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.nio.file.AccessDeniedException;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 

@@ -3,7 +3,6 @@ package com.domain.todo_app.db.user;
 import com.domain.todo_app.db.todo.Todo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +55,7 @@ public class User {
     }
 
     public User(String username, String email, int age, String phoneNumber, Role role) {
+
         this.username = username;
         this.email = email;
         this.age = age;
