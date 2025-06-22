@@ -45,10 +45,7 @@ public class JwtService {
     }
 
     public String generateToken(User user) {
-        UserRequestDto dto = new UserRequestDto();
-        dto.setUsername(user.getUsername());
-        dto.setEmail(user.getEmail());
-        dto.setAge(user.getAge());
+        UserRequestDto dto = new UserRequestDto(user);
         return generateToken(dto);
     }
 

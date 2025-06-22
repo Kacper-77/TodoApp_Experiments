@@ -76,6 +76,8 @@ public class AuthService {
         User user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
+        refreshTokenService.deleteByUser(user);
+
         UserRequestDto userRequestDto = new UserRequestDto();
         userRequestDto.setUsername(user.getUsername());
         userRequestDto.setEmail(user.getEmail());

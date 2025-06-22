@@ -1,5 +1,6 @@
 package com.domain.todo_app.dto;
 
+import com.domain.todo_app.db.user.User;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -35,4 +36,13 @@ public class UserRequestDto {
             message = "Phone number must be in format: XX-XXXX-XXXX or XXX-XXX-XXXX."
     )
     private String phoneNumber;
+
+    public UserRequestDto(User user) {
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.age = user.getAge();
+    }
+
+    public UserRequestDto() {
+    }
 }
