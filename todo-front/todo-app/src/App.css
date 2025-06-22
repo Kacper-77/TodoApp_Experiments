@@ -1,0 +1,200 @@
+.app-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #121212;
+  margin: 0;
+  padding-top: 0px;
+}
+
+.dashboard-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #282626;
+  margin: 0;
+  padding-top: 0px;
+}
+
+.dashboard-container button {
+  padding: 5px;
+  margin-left: 10px;
+  background-color: #0f3402;
+}
+
+.dashboard-container ul button {
+  width: 40px;
+  background-color: #c1a01a;
+}
+
+.dashboard-container span {
+  padding: 20px;
+}
+
+.dashboard-container li {
+  padding-top: 10px;
+}
+
+.glow-text {
+  color: #ffffff;
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  text-shadow:
+    0 0 5px #ffffff,
+    0 0 10px #ffffff,
+    0 0 20px #ffffff,
+    0 0 40px #ffffff,
+    0 0 80px #ffffff;
+  animation: pulseGlow 3s ease-in-out infinite, rotateText 10s linear infinite;
+  display: inline-block;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    text-shadow:
+      0 0 5px #00ffff,
+      0 0 10px #00ffff,
+      0 0 20px #00ffff,
+      0 0 40px #00ffff,
+      0 0 80px #00ffff;
+  }
+  50% {
+    text-shadow:
+      0 0 10px #ff00ae,
+      0 0 20px #ff00ae,
+      0 0 40px #ff00ae,
+      0 0 80px #ff00ae,
+      0 0 120px #ff00ae;
+  }
+}
+
+@keyframes rotateText {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animated-text {
+  font-size: 3rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, rgb(234, 0, 255), rgb(255, 89, 0));
+  background-size: 20% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: slide-gradient 3s linear infinite;
+}
+
+@keyframes slide-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 50% 50%;
+  }
+}
+
+.home-container {
+  position: static;
+  height: 95vh;
+  padding: 15px;
+}
+
+.top-right-buttons {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.top-right-buttons button {
+  margin-left: 5px;
+  color: #00ffff;
+}
+
+.title {
+  text-align: center;
+  margin-top: 40px;
+  background: linear-gradient(90deg, rgb(234, 0, 255), rgb(255, 89, 0));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.todo-app-title {
+  margin-top: 5px;
+  text-align: center;
+  background: linear-gradient(90deg, rgb(234, 0, 255), rgb(255, 89, 0));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.todo-app-title:hover {
+  color: #00ffff;
+}
+
+.login-form {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  text-align: center;
+  padding: 20px;
+  background-color: #000000;
+  border-radius: 1%;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 0 20px rgba(0, 255, 106, 0.2);
+}
+
+.login-form input {
+  width: 91%;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+.login-form button {
+  padding: 8px;
+  width: 99%;
+  font-size: 1rem;
+  background-color: #07bc40;
+  color: #000000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.todo-form {
+  padding: 20px;
+}
+
+.todo-form button {
+  padding: 5px;
+  margin-left: 10px;
+  background-color: #342702;
+}
+
+.todo-form input {
+  padding: 10px;
+  margin-left: 10px;
+}
+
+.todo-form select {
+  padding: 10px;
+  margin-left: 10px;
+}
